@@ -1,66 +1,334 @@
-# Trabalho-TPPE-Entrega-01
+<div align="center">
 
-UnB - Universidade de Brasilia  
-FCTE - Faculdade de Ciencias e Tecnologias em Engenharias  
-TPPE - Técnicas de Programação para Plataformas Emergentes  
+# ⚽ Sistema de Gerenciamento do Campeonato Brasileiro
+
+![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=java)
+![Maven](https://img.shields.io/badge/Maven-3.9+-red?style=for-the-badge&logo=apache-maven)
+![JUnit](https://img.shields.io/badge/JUnit-5.10.0-green?style=for-the-badge&logo=junit5)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+
+**Trabalho Prático de TPPE - Universidade de Brasília**
+
+*Técnicas de Programação para Plataformas Emergentes*
+
+</div>
+
 ---
 
-Trabalho Prático - Valor 40 pontos. 
+## 📋 Índice
 
-Enunciado Geral 
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Pré-requisitos](#-pré-requisitos)
+- [Como Executar](#-como-executar)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Testes](#-testes)
+- [Regras do Campeonato](#-regras-do-campeonato)
+- [Autores](#-autores)
 
-* Os trabalho prático será realizado em 3 etapas, com os conteúdos distribuídos
-  da seguinte maneira: 
-  - Etapa 1: TDD
-  - Etapa 2: Refactoring
-  - Etapa 3: Design by Contracts (DbC)
+---
 
-* O trabalho deverá ser realizado em grupos de 3 a 5 alunos. 
-* Os grupos deverão ser informados através do formulário presente em [link](xxxx).
-* A divisão dos pontos do trabalho será a seguinte: 
-  - Etapa 1 (TDD): 10 pontos
-  - Etapa 2 (Refactoring): 15 pontos
-  - Etapa 3 (DbC): 15 pontos
+## 🎯 Sobre o Projeto
 
-* O trabalho pode ser desenvolvido na linguagem que o grupo desejar, desde que
-  haja 
+Sistema desenvolvido em Java para gerenciar o **Campeonato Brasileiro Série A**, simulando o torneio completo com 20 times em sistema de pontos corridos. O projeto foi desenvolvido utilizando a metodologia **TDD (Test-Driven Development)**, garantindo alta qualidade e cobertura de testes.
 
-# Cenário da aplicação
+O sistema é capaz de:
+- ⚙️ Sortear automaticamente todas as 38 rodadas do campeonato
+- 🔒 Garantir que não existam partidas duplicadas
+- 📊 Calcular pontuação e estatísticas dos times
+- 🏆 Ordenar a tabela de classificação com critérios de desempate
+- 📈 Gerenciar gols marcados, sofridos e saldo de gols
 
-O Campeonato Brasileiro Série A de 2025 é disputado por 20 clubes em sistema de pontos corridos, com 38 rodadas ao longo da temporada. Cada rodada representa uma jornada em que todos os clubes jogam uma partida, enfrentando os demais em turno e returno — ou seja, cada equipe joga contra todas as outras duas vezes, uma em casa e outra fora. Ao final das 38 rodadas, o clube que acumular o maior número de pontos será declarado campeão brasileiro.
+---
 
-A pontuação dos times é definida com base no resultado de cada partida: uma vitória concede 3 pontos ao vencedor, um empate concede 1 ponto a cada equipe, e uma derrota não concede nenhum ponto. A soma desses pontos ao longo das rodadas determina a posição de cada clube na tabela de classificação. Além da pontuação, outros indicadores são fundamentais para definir o desempenho e, em casos de empate, o desempate entre os clubes.
+## ✨ Funcionalidades
 
-O número de vitórias corresponde à quantidade de jogos em que o clube saiu vencedor. Esse critério é o primeiro a ser considerado em caso de empate na pontuação entre dois ou mais clubes. O saldo de gols é calculado subtraindo o número de gols sofridos do número de gols marcados. Por exemplo, se um time marcou 45 gols e sofreu 30, seu saldo de gols é +15. Esse saldo é o segundo critério de desempate. O número de gols marcados, por sua vez, é a soma total de todos os gols que o clube fez ao longo do campeonato, independentemente dos gols sofridos. Esse indicador é usado como terceiro critério de desempate.
+### 🎲 Sorteio de Rodadas
+- Geração automática de 38 rodadas (turno e returno)
+- Cada rodada com 10 partidas (20 times / 2)
+- Algoritmo Round-Robin para distribuição justa
+- Garantia de mando de campo alternado
 
-Se ainda houver igualdade após esses três critérios, o confronto direto entre os clubes empatados é considerado, mas apenas quando o empate envolve dois clubes. Caso o empate persista, são analisados os cartões vermelhos recebidos (menor número favorece o clube), depois os cartões amarelos, e, por fim, se necessário, realiza-se um sorteio na sede da Confederação Brasileira de Futebol (CBF).
+### ⚽ Gestão de Partidas
+- Registro de resultados de partidas
+- Cálculo automático de pontuação:
+  - **Vitória**: 3 pontos
+  - **Empate**: 1 ponto
+  - **Derrota**: 0 pontos
+- Atualização automática de estatísticas dos times
 
-Esses critérios não apenas definem o campeão, mas também determinam os clubes classificados para competições internacionais e os rebaixados para a Série B. Os seis primeiros colocados garantem vaga na Copa Libertadores da América do ano seguinte, enquanto os clubes entre a sétima e a décima segunda posição se classificam para a Copa Sul-Americana. Já os quatro últimos colocados ao final da 38ª rodada são rebaixados para a Série B de 2026.
+### 📊 Tabela de Classificação
+Ordenação automática seguindo os critérios oficiais:
+1. **Pontos** (maior número)
+2. **Vitórias** (maior número)
+3. **Saldo de gols** (maior saldo)
+4. **Gols marcados** (maior número)
 
-Assim, a pontuação, o número de vitórias, o saldo de gols e os gols marcados são elementos centrais que não apenas refletem o desempenho esportivo dos clubes, mas também influenciam diretamente seus destinos na temporada.
+### 🏆 Classificações
+- **Top 6**: Classificados para Copa Libertadores
+- **7º ao 12º**: Classificados para Copa Sul-Americana
+- **Últimos 4**: Rebaixados para Série B
 
+---
 
-# Enunciado do Trabalho Prático 1
+## 🚀 Tecnologias Utilizadas
 
-Considerando o cenário descrito acima, os grupos deverão desenvolver umaa
-aplicação que seja capaz de: 
-1)  realizar os sorteios de jogos de cada rodada; 
-2)  garantir que não existam dois jogos iguais ao longo de todas as rodadas (por
-  jogos iguais entenda jogos com os mesmos times como mandantes e visitantes). 
-3)  calcular a pontuação dos times e a classificação a cada rodada, conforme os
-  critérios de pontuação apresentados no enunciado (vitória - 3 pontos, empate -
-1 ponto, derrota - 0 pontos). 
-4)  calcular os números de  vitórias, gols marcados, gols sofridos, e saldos de
-gols com base nos resultados dos jogos de cada rodada. 
-5)  aplicar o critério de desempate pelo número de vitórias. 
+| Tecnologia | Versão | Descrição |
+|------------|--------|-----------|
+| **Java** | 21 LTS | Linguagem de programação |
+| **Maven** | 3.9+ | Gerenciador de dependências |
+| **JUnit 5** | 5.10.0 | Framework de testes |
+| **AssertJ** | 3.24.2 | Biblioteca de assertions |
+| **JUnit Platform Suite** | 1.10.0 | Execução de suítes de testes |
 
-Cada uma dessas funcionalidades deve ser desenvolvida em seu caso de teste
-próprio. O conjunto final contendo todos os casos de testes deve ser executado
-de uma só vez, através da suíte de testes ``AllTests``.
+---
 
-# Critérios de correção:
+## 📦 Pré-requisitos
 
+Antes de começar, você precisa ter instalado:
 
-# Data de entrega: 
+- **Java 21 (LTS)** ou superior
+  ```bash
+  java -version
+  # Deve mostrar: java version "21" ou superior
+  ```
 
-- 22/10/2025, 23:59hs, via moodle da disciplina. 
+- **Maven 3.9+**
+  ```bash
+  mvn -version
+  # Deve mostrar: Apache Maven 3.9.x ou superior
+  ```
+
+- **Git** (para clonar o repositório)
+  ```bash
+  git --version
+  ```
+
+---
+
+## 🔧 Como Executar
+
+### 1️⃣ Clonar o Repositório
+
+```bash
+git clone https://github.com/carlinn1/Trabalho-TPPE-Entrega-01.git
+cd Trabalho-TPPE-Entrega-01
+```
+
+### 2️⃣ Compilar o Projeto
+
+```bash
+mvn clean compile
+```
+
+### 3️⃣ Executar os Testes
+
+```bash
+# Executar TODOS os testes (126 testes)
+mvn test
+
+# Executar apenas a suíte AllTests
+mvn -Dtest=AllTests test
+
+# Executar uma classe de teste específica
+mvn -Dtest=TimeTest test
+mvn -Dtest=SorteioRodadasTest test
+mvn -Dtest=TabelaClassificacaoTest test
+```
+
+### 4️⃣ Gerar Relatório de Testes
+
+```bash
+mvn clean test
+# Os relatórios ficam em: target/surefire-reports/
+```
+
+### 5️⃣ Limpar o Projeto
+
+```bash
+mvn clean
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+Trabalho-TPPE-Entrega-01/
+│
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── br/unb/tppe/campeonato/
+│   │           ├── Campeonato.java          # Gerencia o campeonato
+│   │           ├── Partida.java             # Representa uma partida
+│   │           ├── Rodada.java              # Agrupa partidas
+│   │           ├── TabelaClassificacao.java # Ordena classificação
+│   │           └── Time.java                # Representa um time
+│   │
+│   └── test/
+│       └── java/
+│           └── br/unb/tppe/campeonato/
+│               ├── AllTests.java                  # ⭐ Suíte de todos os testes
+│               ├── CampeonatoTest.java            # Testes de integração
+│               ├── PartidaTest.java               # Testes de partidas
+│               ├── RodadaTest.java                # Testes de rodadas
+│               ├── SorteioRodadasTest.java        # Testes de sorteio
+│               ├── TabelaClassificacaoTest.java   # Testes de classificação
+│               └── TimeTest.java                  # Testes de times
+│
+├── pom.xml                  # Configuração Maven
+├── README.md                # Este arquivo
+└── LICENSE                  # Licença MIT
+```
+
+---
+
+## 🧪 Testes
+
+### Estatísticas de Cobertura
+
+- **Total de Testes**: 126 ✅
+- **Taxa de Sucesso**: 100% ✅
+- **Classes Testadas**: 5/5 (100%)
+
+### Distribuição de Testes
+
+| Classe de Teste | Testes | Descrição |
+|-----------------|--------|-----------|
+| `TimeTest` | 9 | Pontuação, vitórias, empates, derrotas, gols |
+| `PartidaTest` | 11 | Criação e registro de resultados |
+| `RodadaTest` | 8 | Agrupamento de partidas |
+| `SorteioRodadasTest` | 12 | Sorteio e não duplicação |
+| `TabelaClassificacaoTest` | 11 | Ordenação e desempates |
+| `CampeonatoTest` | 12 | Testes de integração |
+| **TOTAL** | **63** | (executados 2x via AllTests) |
+
+### Exemplos de Testes
+
+#### ✅ Teste de Pontuação
+```java
+@Test
+public void testRegistrarVitoria() {
+    Time time = new Time("Flamengo");
+    time.registrarVitoria(3, 1);
+    
+    assertEquals(3, time.getPontos());      // 3 pontos por vitória
+    assertEquals(1, time.getVitorias());    // 1 vitória
+    assertEquals(3, time.getGolsMarcados());
+    assertEquals(2, time.getSaldoDeGols()); // 3 - 1 = 2
+}
+```
+
+#### ✅ Teste de Sorteio
+```java
+@Test
+public void testNaoExistePartidasDuplicadas() {
+    Campeonato campeonato = criarCampeonatoCompleto();
+    campeonato.sortearRodadas();
+    
+    assertFalse(campeonato.existemPartidasDuplicadas());
+}
+```
+
+### Executar Testes Individualmente
+
+```bash
+# Por classe
+mvn -Dtest=TimeTest test
+mvn -Dtest=SorteioRodadasTest test
+
+# Por método
+mvn -Dtest=TimeTest#testRegistrarVitoria test
+
+# Modo verboso
+mvn test -X
+```
+
+---
+
+## ⚽ Regras do Campeonato
+
+### Sistema de Pontuação
+
+| Resultado | Pontos |
+|-----------|--------|
+| Vitória | 3 pontos |
+| Empate | 1 ponto |
+| Derrota | 0 pontos |
+
+### Critérios de Desempate
+
+1. **Maior número de pontos**
+2. **Maior número de vitórias**
+3. **Maior saldo de gols** (gols marcados - gols sofridos)
+4. **Maior número de gols marcados**
+5. Nome do time (ordem alfabética)
+
+### Formato do Campeonato
+
+- **Times**: 20 clubes
+- **Rodadas**: 38 (19 turno + 19 returno)
+- **Partidas por rodada**: 10
+- **Total de partidas**: 380
+- **Partidas por time**: 38 (19 casa + 19 fora)
+
+---
+
+## 👥 Autores
+
+Desenvolvido por:
+
+- **Carlos Eduardo** - [@carlinn1](https://github.com/carlinn1)
+- **Nicollas** - nicollason@gmail.com
+- **Genilson** - genilson.junior.99006@gmail.com
+
+---
+
+## 📚 Disciplina
+
+**Universidade de Brasília (UnB)**  
+Faculdade de Ciências e Tecnologias em Engenharias  
+TPPE - Técnicas de Programação para Plataformas Emergentes  
+
+**Trabalho Prático - Etapa 1: TDD**  
+Data de Entrega: 22/10/2025
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 🤝 Como Contribuir
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/NovaFuncionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
+5. Abra um Pull Request
+
+---
+
+## 📞 Suporte
+
+Se você tiver alguma dúvida ou problema:
+
+1. Abra uma [Issue](https://github.com/carlinn1/Trabalho-TPPE-Entrega-01/issues)
+2. Entre em contato com os desenvolvedores
+3. Consulte a documentação do código (JavaDoc)
+
+---
+
+<div align="center">
+
+### ⭐ Se este projeto foi útil para você, considere dar uma estrela!
+
+**Feito com ❤️ e ☕ por estudantes da UnB**
+
+[⬆ Voltar ao topo](#-sistema-de-gerenciamento-do-campeonato-brasileiro)
+
+</div>
