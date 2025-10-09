@@ -17,6 +17,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * 4. SorteioRodadasTest - Testes de sorteio e garantia de não duplicação
  * 5. TabelaClassificacaoTest - Testes de ordenação e critérios de desempate
  * 6. CampeonatoTest - Testes de integração do sistema completo
+ * 7. TestesParametrizados - Testes parametrizados com múltiplos cenários
  * 
  * Para executar todos os testes:
  * - Via Maven: mvn test
@@ -31,7 +32,8 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     RodadaTest.class,
     SorteioRodadasTest.class,
     TabelaClassificacaoTest.class,
-    CampeonatoTest.class
+    CampeonatoTest.class,
+    TestesParametrizados.class
 })
 public class AllTests {
     // Esta classe serve apenas como holder para as anotações da suíte
