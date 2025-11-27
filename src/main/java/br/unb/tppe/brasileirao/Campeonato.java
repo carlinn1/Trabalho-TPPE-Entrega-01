@@ -9,11 +9,13 @@ public class Campeonato {
     private List<Time> times;
     private List<Rodada> rodadas;
     private int rodadaAtual;
+    private List<List<Partida>> tabelaRoundRobin;
 
     public Campeonato(List<Time> times) {
         this.times = new ArrayList<>(times);
         this.rodadas = new ArrayList<>();
         this.rodadaAtual = 0;
+        this.tabelaRoundRobin = gerarTabelaRoundRobin();
     }
 
     public List<Time> getTimes() {
@@ -32,8 +34,31 @@ public class Campeonato {
      * Sorteia as partidas de uma rodada garantindo que:
      * - Cada time joga apenas uma vez na rodada
      * - Todos os times jogam
+     * - Não há confrontos duplicados entre rodadas
      */
     public Rodada sortearRodada() {
+        if (rodadaAtual >= tabelaRoundRobin.size()) {
+            // Se já passou de todas as rodadas do round-robin, gera aleatoriamente
+            return sortearRodadaAleatoria();
+        }
+        
+        rodadaAtual++;
+        Rodada rodada = new Rodada(rodadaAtual);
+        
+        // Pega as partidas pré-definidas da tabela round-robin
+        List<Partida> partidasRodada = tabelaRoundRobin.get(rodadaAtual - 1);
+        for (Partida partida : partidasRodada) {
+            rodada.adicionarPartida(partida);
+        }
+
+        rodadas.add(rodada);
+        return rodada;
+    }
+    
+    /**
+     * Sorteia uma rodada aleatória (usado quando ultrapassa o round-robin).
+     */
+    private Rodada sortearRodadaAleatoria() {
         rodadaAtual++;
         Rodada rodada = new Rodada(rodadaAtual);
         
@@ -51,6 +76,59 @@ public class Campeonato {
 
         rodadas.add(rodada);
         return rodada;
+    }
+    
+    /**
+     * Gera a tabela de confrontos usando o algoritmo Round-Robin.
+     * Garante que cada time enfrente todos os outros exatamente uma vez.
+     */
+    private List<List<Partida>> gerarTabelaRoundRobin() {
+        int numTimes = times.size();
+        validarNumeroDeTimes(numTimes);
+        List<Time> timesArray = copiarListaDeTimes();
+        int numRodadas = calcularNumeroDeRodadas(numTimes);
+        List<List<Partida>> tabela = new ArrayList<>();
+        for (int rodada = 0; rodada < numRodadas; rodada++) {
+            List<Partida> partidasRodada = emparelharTimesRodada(timesArray, numTimes, rodada);
+            tabela.add(partidasRodada);
+            rotacionarTimes(timesArray, numTimes);
+        }
+        return tabela;
+    }
+
+    private void validarNumeroDeTimes(int numTimes) {
+        if (numTimes % 2 != 0) {
+            throw new IllegalArgumentException("Número de times deve ser par");
+        }
+    }
+
+    private List<Time> copiarListaDeTimes() {
+        return new ArrayList<>(times);
+    }
+
+    private int calcularNumeroDeRodadas(int numTimes) {
+        return numTimes - 1;
+    }
+
+    private List<Partida> emparelharTimesRodada(List<Time> timesArray, int numTimes, int rodada) {
+        List<Partida> partidasRodada = new ArrayList<>();
+        for (int i = 0; i < numTimes / 2; i++) {
+            int home = i;
+            int away = numTimes - 1 - i;
+            Time mandante = timesArray.get(home);
+            Time visitante = timesArray.get(away);
+            if (rodada % 2 == 0) {
+                partidasRodada.add(new Partida(mandante, visitante));
+            } else {
+                partidasRodada.add(new Partida(visitante, mandante));
+            }
+        }
+        return partidasRodada;
+    }
+
+    private void rotacionarTimes(List<Time> timesArray, int numTimes) {
+        Time ultimo = timesArray.remove(numTimes - 1);
+        timesArray.add(1, ultimo);
     }
 
     /**
