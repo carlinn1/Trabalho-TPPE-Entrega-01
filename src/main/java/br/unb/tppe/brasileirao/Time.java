@@ -5,21 +5,11 @@ package br.unb.tppe.brasileirao;
  */
 public class Time {
     private String nome;
-    private int pontos;
-    private int vitorias;
-    private int empates;
-    private int derrotas;
-    private int golsMarcados;
-    private int golsSofridos;
+    private Estatisticas estatisticas;
 
     public Time(String nome) {
         this.nome = nome;
-        this.pontos = 0;
-        this.vitorias = 0;
-        this.empates = 0;
-        this.derrotas = 0;
-        this.golsMarcados = 0;
-        this.golsSofridos = 0;
+        this.estatisticas = new Estatisticas();
     }
 
     public String getNome() {
@@ -27,71 +17,63 @@ public class Time {
     }
 
     public int getPontos() {
-        return pontos;
+        return estatisticas.getPontos();
     }
 
     public int getVitorias() {
-        return vitorias;
+        return estatisticas.getVitorias();
     }
 
     public int getEmpates() {
-        return empates;
+        return estatisticas.getEmpates();
     }
 
     public int getDerrotas() {
-        return derrotas;
+        return estatisticas.getDerrotas();
     }
 
     public int getGolsMarcados() {
-        return golsMarcados;
+        return estatisticas.getGolsMarcados();
     }
 
     public int getGolsSofridos() {
-        return golsSofridos;
+        return estatisticas.getGolsSofridos();
     }
 
     public int getSaldoGols() {
-        return golsMarcados - golsSofridos;
+        return estatisticas.getSaldoGols();
     }
 
     public int getJogos() {
-        return vitorias + empates + derrotas;
+        return estatisticas.getJogos();
     }
 
     /**
      * Registra uma vitória para o time.
      */
     public void registrarVitoria(int golsMarcados, int golsSofridos) {
-        this.vitorias++;
-        this.pontos += 3;
-        this.golsMarcados += golsMarcados;
-        this.golsSofridos += golsSofridos;
+        estatisticas.registrarVitoria(golsMarcados, golsSofridos);
     }
 
     /**
      * Registra um empate para o time.
      */
     public void registrarEmpate(int golsMarcados, int golsSofridos) {
-        this.empates++;
-        this.pontos += 1;
-        this.golsMarcados += golsMarcados;
-        this.golsSofridos += golsSofridos;
+        estatisticas.registrarEmpate(golsMarcados, golsSofridos);
     }
 
     /**
      * Registra uma derrota para o time.
      */
     public void registrarDerrota(int golsMarcados, int golsSofridos) {
-        this.derrotas++;
-        this.golsMarcados += golsMarcados;
-        this.golsSofridos += golsSofridos;
+        estatisticas.registrarDerrota(golsMarcados, golsSofridos);
     }
 
     @Override
     public String toString() {
-        return String.format("%s - P:%d V:%d E:%d D:%d GM:%d GS:%d SG:%d",
-                nome, pontos, vitorias, empates, derrotas, 
-                golsMarcados, golsSofridos, getSaldoGols());
+            return String.format("%s - P:%d V:%d E:%d D:%d GM:%d GS:%d SG:%d",
+                nome, getPontos(), getVitorias(), getEmpates(), getDerrotas(), 
+                getGolsMarcados(), getGolsSofridos(), getSaldoGols());
     }
 
     @Override
