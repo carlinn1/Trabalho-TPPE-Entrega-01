@@ -37,25 +37,40 @@ public class Partida {
     }
 
     /**
-     * Registra o resultado da partida e atualiza as estatísticas dos times.
+     * Registra o resultado da partida e atualiza as estatísticas dos times usando objeto-método.
      */
     public void registrarResultado(int golsMandante, int golsVisitante) {
-        this.golsMandante = golsMandante;
-        this.golsVisitante = golsVisitante;
-        this.realizada = true;
+        ResultadoPartida resultado = new ResultadoPartida(golsMandante, golsVisitante);
+        resultado.aplicar(this);
+    }
 
-        if (golsMandante > golsVisitante) {
-            // Vitória do mandante
-            mandante.registrarVitoria(golsMandante, golsVisitante);
-            visitante.registrarDerrota(golsVisitante, golsMandante);
-        } else if (golsMandante < golsVisitante) {
-            // Vitória do visitante
-            mandante.registrarDerrota(golsMandante, golsVisitante);
-            visitante.registrarVitoria(golsVisitante, golsMandante);
-        } else {
-            // Empate
-            mandante.registrarEmpate(golsMandante, golsVisitante);
-            visitante.registrarEmpate(golsVisitante, golsMandante);
+    /**
+     * Classe interna que encapsula o registro do resultado da partida.
+     */
+    private static class ResultadoPartida {
+        private final int golsMandante;
+        private final int golsVisitante;
+
+        public ResultadoPartida(int golsMandante, int golsVisitante) {
+            this.golsMandante = golsMandante;
+            this.golsVisitante = golsVisitante;
+        }
+
+        public void aplicar(Partida partida) {
+            partida.golsMandante = golsMandante;
+            partida.golsVisitante = golsVisitante;
+            partida.realizada = true;
+
+            if (golsMandante > golsVisitante) {
+                partida.mandante.registrarVitoria(golsMandante, golsVisitante);
+                partida.visitante.registrarDerrota(golsVisitante, golsMandante);
+            } else if (golsMandante < golsVisitante) {
+                partida.mandante.registrarDerrota(golsMandante, golsVisitante);
+                partida.visitante.registrarVitoria(golsVisitante, golsMandante);
+            } else {
+                partida.mandante.registrarEmpate(golsMandante, golsVisitante);
+                partida.visitante.registrarEmpate(golsVisitante, golsMandante);
+            }
         }
     }
 
